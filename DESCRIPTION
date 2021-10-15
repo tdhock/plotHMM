@@ -1,0 +1,17 @@
+Package: plotHMM
+Type: Package
+Title: Plot Hidden Markov Models
+Version: 2021.10.15
+Authors@R: c(
+    person("Toby", "Hocking",
+     email="toby.hocking@r-project.org",
+     role=c("aut", "cre"),
+     comment="Original animint code"))
+Description: Hidden Markov Models are useful for modeling
+ sequential data. This package provides several functions
+ implemented in C++ for explaining the algorithms used for
+ Hidden Markov Models (forward, backward, Viterbi decoding,
+ Baum-Welch learning).
+License: GPL (>= 2)
+Imports: Rcpp (>= 1.0.7)
+LinkingTo: Rcpp
