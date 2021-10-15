@@ -14,4 +14,4 @@ Description: Hidden Markov Models are useful for modeling
  Baum-Welch learning).
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7)
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo

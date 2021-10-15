@@ -1,0 +1,11 @@
+plotHMM: Plot Hidden Markov Models
+
+Using C++ code is about 100x faster than R code for the forward
+algorithm.
+
+#+BEGIN_SRC 
+Unit: microseconds
+ expr     min      lq     mean  median      uq     max neval
+    R 15842.4 16088.2 17265.66 16830.2 18657.6 18909.9     5
+  C++   149.0   156.2   163.60   164.9   169.2   178.7     5
+#+END_SRC
