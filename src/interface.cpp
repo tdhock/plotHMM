@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include "forward.h"
 #include "backward.h"
+#include "multiply.h"
 
 // [[Rcpp::export]]
 Rcpp::List forward_interface
@@ -77,6 +78,37 @@ Rcpp::NumericMatrix backward_interface
     Rcpp::stop("transition_mat entries must be between zero and one");
   }
   return log_beta_mat;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericMatrix multiply_interface
+(Rcpp::NumericMatrix log_alpha_mat,
+ Rcpp::NumericMatrix log_beta_mat
+ ) {
+  int N_data = log_alpha_mat.nrow();
+  int N_states = log_alpha_mat.ncol();
+  if(N_data < 1){
+    Rcpp::stop("log_alpha_mat must have at least one row");
+  }
+  if(N_states < 1){
+    Rcpp::stop("log_alpha_mat must have at least one col");
+  }
+  if(log_beta_mat.nrow() != N_data){
+    Rcpp::stop("nrow(log_beta_mat) must be same as nrow(log_alpha_mat)");
+  }
+  if(log_beta_mat.ncol() != N_states){
+    Rcpp::stop("ncol(log_beta_mat) must be same as ncol(log_alpha_mat)");
+  }
+  Rcpp::NumericMatrix log_gamma_mat(N_data, N_states);
+  multiply
+    (N_data,
+     N_states,
+     &log_alpha_mat[0],
+     &log_beta_mat[0],
+     //inputs above, outputs below.
+     &log_gamma_mat[0]
+     );
+  return log_gamma_mat;
 }
 
 // TODO use arma::cube which is 3d tensor. cube(ptr_aux_mem, n_rows, n_cols, n_slices, copy_aux_mem = true, strict = false)

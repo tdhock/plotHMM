@@ -9,3 +9,7 @@ backward_interface <- function(log_emission_mat, transition_mat) {
     .Call(`_plotHMM_backward_interface`, log_emission_mat, transition_mat)
 }
 
+multiply_interface <- function(log_alpha_mat, log_beta_mat) {
+    .Call(`_plotHMM_multiply_interface`, log_alpha_mat, log_beta_mat)
+}
+

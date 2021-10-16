@@ -36,10 +36,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// multiply_interface
+Rcpp::NumericMatrix multiply_interface(Rcpp::NumericMatrix log_alpha_mat, Rcpp::NumericMatrix log_beta_mat);
+RcppExport SEXP _plotHMM_multiply_interface(SEXP log_alpha_matSEXP, SEXP log_beta_matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_alpha_mat(log_alpha_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_beta_mat(log_beta_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(multiply_interface(log_alpha_mat, log_beta_mat));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_plotHMM_forward_interface", (DL_FUNC) &_plotHMM_forward_interface, 3},
     {"_plotHMM_backward_interface", (DL_FUNC) &_plotHMM_backward_interface, 2},
+    {"_plotHMM_multiply_interface", (DL_FUNC) &_plotHMM_multiply_interface, 2},
     {NULL, NULL, 0}
 };
 

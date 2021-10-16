@@ -59,3 +59,20 @@ test_that("C++ backward agrees with R", {
   out.mat <- plotHMM::backward_interface(log.emission.mat, A.mat)
   expect_equal(out.mat, log.beta.mat)
 })
+
+log.gamma.mat <- matrix(NA, N.data, n.states)
+normalizer <- rep(-Inf, N.data)
+for(state.i in 1:n.states){
+  log.gamma.mat[,state.i] <- elnproduct(
+    log.alpha.mat[,state.i],log.beta.mat[,state.i])
+  normalizer <- elnsum(normalizer, log.gamma.mat[,state.i])
+}
+for(state.i in 1:n.states){
+  log.gamma.mat[,state.i] <- elnproduct(
+    log.gamma.mat[,state.i], -normalizer)
+}
+test_that("C++ multiply agrees with R", {
+  cpp.log.gamma.mat <- plotHMM::multiply_interface(log.alpha.mat, log.beta.mat)
+  expect_equal(cpp.log.gamma.mat, log.gamma.mat)
+})
+
