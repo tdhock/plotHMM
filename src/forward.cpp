@@ -7,24 +7,24 @@ int forward
 (int N_data,
  int N_states,
  double *log_emission_ptr,
- double *initial_prob_ptr,
  double *transition_ptr,
+ double *initial_prob_ptr,
  //inputs above, outputs below.
  double *log_alpha_ptr,
  double *log_lik_ptr
  ){
   arma::mat log_emission_mat    //copy_aux_mem, strict(no size change)
     (log_emission_ptr, N_data, N_states, false, true);
-  arma::vec initial_prob_vec
-    (initial_prob_ptr, N_states, false, true);
   arma::mat transition_mat
     (transition_ptr, N_states, N_states, false, true);
+  arma::vec initial_prob_vec
+    (initial_prob_ptr, N_states, false, true);
   arma::mat log_alpha_mat
     (log_alpha_ptr, N_data, N_states, false, true);
   for(int state_i=0; state_i<N_states; state_i++){
     double prob = initial_prob_vec(state_i);
     if(!(0 <= prob && prob <= 1)){
-      return ERROR_INITIAL_PROB_VEC_ENTRIES_MUST_BE_BETWEEN_ZERO_AND_ONE;
+      return ERROR_FORWARD_INITIAL_PROB_VEC_ENTRIES_MUST_BE_BETWEEN_ZERO_AND_ONE;
     }
     log_alpha_mat(0,state_i) = elnproduct
       (log(prob), log_emission_mat(0,state_i));

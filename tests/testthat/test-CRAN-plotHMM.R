@@ -34,7 +34,7 @@ for(data.t in 2:N.data){
   log.alpha.mat[data.t,] <- elnproduct(log.alpha.vec, emission.prob.vec)
 }
 test_that("C++ forward agrees with R", {
-  out.list <- plotHMM::forward_interface(log.emission.mat, pi.vec, A.mat)
+  out.list <- plotHMM::forward_interface(log.emission.mat, A.mat, pi.vec)
   expect_equal(out.list$log_alpha, log.alpha.mat)
 })
 
@@ -55,3 +55,7 @@ for(data.t in seq(N.data-1, 1)){
     log.beta.mat[data.t,state.i] <- log.beta
   }
 }
+test_that("C++ backward agrees with R", {
+  out.mat <- plotHMM::backward_interface(log.emission.mat, A.mat)
+  expect_equal(out.mat, log.beta.mat)
+})

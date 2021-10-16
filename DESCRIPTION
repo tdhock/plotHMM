@@ -5,8 +5,7 @@ Version: 2021.10.15
 Authors@R: c(
     person("Toby", "Hocking",
      email="toby.hocking@r-project.org",
-     role=c("aut", "cre"),
-     comment="Original animint code"))
+     role=c("aut", "cre")))
 Description: Hidden Markov Models are useful for modeling
  sequential data. This package provides several functions
  implemented in C++ for explaining the algorithms used for
@@ -15,3 +14,4 @@ Description: Hidden Markov Models are useful for modeling
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7)
 LinkingTo: Rcpp, RcppArmadillo
+Suggests: testthat
