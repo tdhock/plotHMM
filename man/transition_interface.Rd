@@ -1,19 +1,19 @@
-\name{pairwise_interface}
-\alias{pairwise_interface}
-\title{Pairwise algorithm}
-\description{Efficient implementation of pairwise algorithm in C++ code,
+\name{transition_interface}
+\alias{transition_interface}
+\title{Transition algorithm}
+\description{Efficient implementation of transition algorithm in C++ code,
   for N data and S states.}
-\usage{pairwise_interface(
-  log_emission_mat, transition_mat, log_alpha_mat, log_beta_mat)}
+\usage{transition_interface(
+  log_gamma_mat, log_xi_array)}
 \arguments{
-  \item{log_emission_mat, log_alpha_mat, log_beta_mat}{
-    N x S numeric matrices of log probabilities.}
-  \item{transition_mat}{S x S numeric matrix; transition_mat[i,j] is the
-    probability of going from state i to state j.}
+  \item{log_gamma_mat}{
+    N x S numeric matrices of log probabilities from multiply.}
+  \item{log_xi_array}{S x S x N-1 numeric array of log probabilities
+    from pairwise.}
 }
 
 \value{
-  S x S x N-1 numeric array of log probabilities.
+  S x S numeric array of probabilities (new transition matrix).
 }
 
 \author{Toby Dylan Hocking}
@@ -41,6 +41,8 @@ f.list <- plotHMM::forward_interface(log.emission.mat, A.mat, pi.vec)
 b.mat <- plotHMM::backward_interface(log.emission.mat, A.mat)
 log.gamma.mat <- plotHMM::multiply_interface(f.list$log_alpha, b.mat)
 prob.mat <- exp(log.gamma.mat)
-plotHMM::pairwise_interface(log.emission.mat, A.mat, f.list$log_alpha, b.mat)
+log.xi.array <- plotHMM::pairwise_interface(
+  log.emission.mat, A.mat, f.list$log_alpha, b.mat)
+plotHMM::transition_interface(log.gamma.mat, log.xi.array)
 
 }

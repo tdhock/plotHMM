@@ -3,6 +3,7 @@
 #include "backward.h"
 #include "multiply.h"
 #include "pairwise.h"
+#include "transition.h"
 
 // [[Rcpp::export]]
 Rcpp::List forward_interface
@@ -161,4 +162,31 @@ Rcpp::NumericVector pairwise_interface
   return log_xi_arr;
 }
 
-// TODO use arma::cube which is 3d tensor. cube(ptr_aux_mem, n_rows, n_cols, n_slices, copy_aux_mem = true, strict = false)
+// [[Rcpp::export]]
+Rcpp::NumericVector transition_interface
+(Rcpp::NumericMatrix log_gamma_mat,
+ Rcpp::NumericVector log_xi_array
+ ) {
+  int N_data = log_gamma_mat.nrow();
+  int N_states = log_gamma_mat.ncol();
+  if(N_data < 1){
+    Rcpp::stop("log_gamma_mat must have at least one row");
+  }
+  if(N_states < 1){
+    Rcpp::stop("log_gamma_mat must have at least one col");
+  }
+  if(log_xi_array.length() != N_states * N_states * (N_data-1)){
+    Rcpp::stop("length(log_xi_array) must be S x S x N-1 where N=nrow(log_gamma_mat) and S=ncol(log_gamma_mat)");
+  }
+  Rcpp::NumericMatrix transition_mat(N_states, N_states);
+  transition
+    (N_data,
+     N_states,
+     &log_gamma_mat[0],
+     &log_xi_array[0],
+     //inputs above, outputs below.
+     &transition_mat[0]
+     );
+  return transition_mat;
+}
+

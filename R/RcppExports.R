@@ -17,3 +17,7 @@ pairwise_interface <- function(log_emission_mat, transition_mat, log_alpha_mat, 
     .Call(`_plotHMM_pairwise_interface`, log_emission_mat, transition_mat, log_alpha_mat, log_beta_mat)
 }
 
+transition_interface <- function(log_gamma_mat, log_xi_array) {
+    .Call(`_plotHMM_transition_interface`, log_gamma_mat, log_xi_array)
+}
+

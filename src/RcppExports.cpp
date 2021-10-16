@@ -62,12 +62,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// transition_interface
+Rcpp::NumericVector transition_interface(Rcpp::NumericMatrix log_gamma_mat, Rcpp::NumericVector log_xi_array);
+RcppExport SEXP _plotHMM_transition_interface(SEXP log_gamma_matSEXP, SEXP log_xi_arraySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_gamma_mat(log_gamma_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type log_xi_array(log_xi_arraySEXP);
+    rcpp_result_gen = Rcpp::wrap(transition_interface(log_gamma_mat, log_xi_array));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_plotHMM_forward_interface", (DL_FUNC) &_plotHMM_forward_interface, 3},
     {"_plotHMM_backward_interface", (DL_FUNC) &_plotHMM_backward_interface, 2},
     {"_plotHMM_multiply_interface", (DL_FUNC) &_plotHMM_multiply_interface, 2},
     {"_plotHMM_pairwise_interface", (DL_FUNC) &_plotHMM_pairwise_interface, 4},
+    {"_plotHMM_transition_interface", (DL_FUNC) &_plotHMM_transition_interface, 2},
     {NULL, NULL, 0}
 };
 

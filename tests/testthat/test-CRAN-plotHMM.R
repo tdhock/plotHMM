@@ -102,6 +102,7 @@ test_that("C++ pairwise agrees with R", {
   expect_equal(cpp.log.xi.arr, xi.arr)
 })
 
+new.A.mat <- matrix(1/n.states, n.states, n.states)
 for(state.i in 1:n.states){
   for(state.j in 1:n.states){
     numerator <- -Inf
@@ -110,6 +111,11 @@ for(state.i in 1:n.states){
       numerator <- elnsum(numerator, xi.arr[state.i, state.j, data.t])
       denominator <- elnsum(denominator, log.gamma.mat[data.t, state.i])
     }
-    A.mat[state.i, state.j] <- exp(elnproduct(numerator, -denominator))
+    new.A.mat[state.i, state.j] <- exp(elnproduct(numerator, -denominator))
   }
 }
+test_that("C++ transition agrees with R", {
+  cpp.new.A.mat <- plotHMM::transition_interface(log.gamma.mat, xi.arr)
+  expect_equal(cpp.new.A.mat, new.A.mat)
+})
+
