@@ -76,3 +76,40 @@ test_that("C++ multiply agrees with R", {
   expect_equal(cpp.log.gamma.mat, log.gamma.mat)
 })
 
+xi.arr <- array(NA, c(n.states, n.states, N.data-1))
+for(data.t in seq(1, N.data-1)){
+  normalizer <- -Inf
+  for(state.i in 1:n.states){
+    for(state.j in 1:n.states){
+      first.product <- elnproduct(
+        log.emission.mat[data.t+1, state.j],
+        log.beta.mat[data.t+1, state.j])
+      second.product <- elnproduct(
+        first.product,
+        log(A.mat[state.i, state.j]))
+      value <- elnproduct(
+        second.product,
+        log.alpha.mat[data.t, state.i])
+      normalizer <- elnsum(normalizer, value)
+      xi.arr[state.i, state.j, data.t] <- value
+    }
+  }
+  xi.arr[,, data.t] <- elnproduct(xi.arr[,, data.t], -normalizer)
+}
+test_that("C++ pairwise agrees with R", {
+  cpp.log.xi.arr <- plotHMM::pairwise_interface(
+    log.emission.mat, A.mat, log.alpha.mat, log.beta.mat)
+  expect_equal(cpp.log.xi.arr, xi.arr)
+})
+
+for(state.i in 1:n.states){
+  for(state.j in 1:n.states){
+    numerator <- -Inf
+    denominator <- -Inf
+    for(data.t in seq(1, N.data-1)){
+      numerator <- elnsum(numerator, xi.arr[state.i, state.j, data.t])
+      denominator <- elnsum(denominator, log.gamma.mat[data.t, state.i])
+    }
+    A.mat[state.i, state.j] <- exp(elnproduct(numerator, -denominator))
+  }
+}

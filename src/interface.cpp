@@ -2,6 +2,7 @@
 #include "forward.h"
 #include "backward.h"
 #include "multiply.h"
+#include "pairwise.h"
 
 // [[Rcpp::export]]
 Rcpp::List forward_interface
@@ -109,6 +110,55 @@ Rcpp::NumericMatrix multiply_interface
      &log_gamma_mat[0]
      );
   return log_gamma_mat;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector pairwise_interface
+(Rcpp::NumericMatrix log_emission_mat,
+ Rcpp::NumericMatrix transition_mat,
+ Rcpp::NumericMatrix log_alpha_mat,
+ Rcpp::NumericMatrix log_beta_mat
+ ) {
+  int N_data = log_alpha_mat.nrow();
+  int N_states = log_alpha_mat.ncol();
+  if(N_data < 1){
+    Rcpp::stop("log_alpha_mat must have at least one row");
+  }
+  if(N_states < 1){
+    Rcpp::stop("log_alpha_mat must have at least one col");
+  }
+  if(log_beta_mat.nrow() != N_data){
+    Rcpp::stop("nrow(log_beta_mat) must be same as nrow(log_alpha_mat)");
+  }
+  if(log_beta_mat.ncol() != N_states){
+    Rcpp::stop("ncol(log_beta_mat) must be same as ncol(log_alpha_mat)");
+  }
+  if(log_emission_mat.nrow() != N_data){
+    Rcpp::stop("nrow(log_emission_mat) must be same as nrow(log_alpha_mat)");
+  }
+  if(log_emission_mat.ncol() != N_states){
+    Rcpp::stop("ncol(log_emission_mat) must be same as ncol(log_alpha_mat)");
+  }
+  if(transition_mat.nrow() != N_states){
+    Rcpp::stop("nrow(transition_mat) must be same as ncol(log_alpha_mat)");
+  }
+  if(transition_mat.ncol() != N_states){
+    Rcpp::stop("ncol(transition_mat) must be same as ncol(log_alpha_mat)");
+  }
+  Rcpp::NumericVector log_xi_arr(N_states*N_states*(N_data-1));
+  log_xi_arr.attr("dim") = Rcpp::IntegerVector::create
+    (N_states, N_states, N_data-1);
+  pairwise
+    (N_data,
+     N_states,
+     &log_emission_mat[0],
+     &transition_mat[0],
+     &log_alpha_mat[0],
+     &log_beta_mat[0],
+     //inputs above, outputs below.
+     &log_xi_arr[0]
+     );
+  return log_xi_arr;
 }
 
 // TODO use arma::cube which is 3d tensor. cube(ptr_aux_mem, n_rows, n_cols, n_slices, copy_aux_mem = true, strict = false)

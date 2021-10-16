@@ -48,11 +48,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pairwise_interface
+Rcpp::NumericVector pairwise_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix transition_mat, Rcpp::NumericMatrix log_alpha_mat, Rcpp::NumericMatrix log_beta_mat);
+RcppExport SEXP _plotHMM_pairwise_interface(SEXP log_emission_matSEXP, SEXP transition_matSEXP, SEXP log_alpha_matSEXP, SEXP log_beta_matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_emission_mat(log_emission_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type transition_mat(transition_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_alpha_mat(log_alpha_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_beta_mat(log_beta_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairwise_interface(log_emission_mat, transition_mat, log_alpha_mat, log_beta_mat));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_plotHMM_forward_interface", (DL_FUNC) &_plotHMM_forward_interface, 3},
     {"_plotHMM_backward_interface", (DL_FUNC) &_plotHMM_backward_interface, 2},
     {"_plotHMM_multiply_interface", (DL_FUNC) &_plotHMM_multiply_interface, 2},
+    {"_plotHMM_pairwise_interface", (DL_FUNC) &_plotHMM_pairwise_interface, 4},
     {NULL, NULL, 0}
 };
 

@@ -13,3 +13,7 @@ multiply_interface <- function(log_alpha_mat, log_beta_mat) {
     .Call(`_plotHMM_multiply_interface`, log_alpha_mat, log_beta_mat)
 }
 
+pairwise_interface <- function(log_emission_mat, transition_mat, log_alpha_mat, log_beta_mat) {
+    .Call(`_plotHMM_pairwise_interface`, log_emission_mat, transition_mat, log_alpha_mat, log_beta_mat)
+}
+
