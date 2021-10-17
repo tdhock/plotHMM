@@ -2,13 +2,14 @@
 \alias{transition_interface}
 \title{Transition algorithm}
 \description{Efficient implementation of transition algorithm in C++ code,
-  for N data and S states.}
+  for T transitions and S states.}
 \usage{transition_interface(
   log_gamma_mat, log_xi_array)}
 \arguments{
   \item{log_gamma_mat}{
-    N x S numeric matrices of log probabilities from multiply.}
-  \item{log_xi_array}{S x S x N-1 numeric array of log probabilities
+    T x S numeric matrix, taken by removing the last row from the log
+    probabilities from multiply.}
+  \item{log_xi_array}{S x S x T numeric array of log probabilities
     from pairwise.}
 }
 
@@ -43,6 +44,6 @@ log.gamma.mat <- plotHMM::multiply_interface(f.list$log_alpha, b.mat)
 prob.mat <- exp(log.gamma.mat)
 log.xi.array <- plotHMM::pairwise_interface(
   log.emission.mat, A.mat, f.list$log_alpha, b.mat)
-plotHMM::transition_interface(log.gamma.mat, log.xi.array)
+plotHMM::transition_interface(log.gamma.mat[-N.data,], log.xi.array)
 
 }

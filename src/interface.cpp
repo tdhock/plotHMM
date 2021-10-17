@@ -167,20 +167,20 @@ Rcpp::NumericVector transition_interface
 (Rcpp::NumericMatrix log_gamma_mat,
  Rcpp::NumericVector log_xi_array
  ) {
-  int N_data = log_gamma_mat.nrow();
+  int N_transitions = log_gamma_mat.nrow();
   int N_states = log_gamma_mat.ncol();
-  if(N_data < 1){
+  if(N_transitions < 1){
     Rcpp::stop("log_gamma_mat must have at least one row");
   }
   if(N_states < 1){
     Rcpp::stop("log_gamma_mat must have at least one col");
   }
-  if(log_xi_array.length() != N_states * N_states * (N_data-1)){
-    Rcpp::stop("length(log_xi_array) must be S x S x N-1 where N=nrow(log_gamma_mat) and S=ncol(log_gamma_mat)");
+  if(log_xi_array.length() != N_states * N_states * N_transitions){
+    Rcpp::stop("length(log_xi_array) must be S x S x N where N=nrow(log_gamma_mat) and S=ncol(log_gamma_mat)");
   }
   Rcpp::NumericMatrix transition_mat(N_states, N_states);
   transition
-    (N_data,
+    (N_transitions,
      N_states,
      &log_gamma_mat[0],
      &log_xi_array[0],
