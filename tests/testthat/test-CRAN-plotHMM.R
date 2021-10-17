@@ -115,7 +115,8 @@ for(state.i in 1:n.states){
   }
 }
 test_that("C++ transition agrees with R", {
-  cpp.new.A.mat <- plotHMM::transition_interface(log.gamma.mat, xi.arr)
+  cpp.new.A.mat <- plotHMM::transition_interface(
+    log.gamma.mat[-N.data,], xi.arr[,,-N.data])
   expect_equal(cpp.new.A.mat, new.A.mat)
 })
 
