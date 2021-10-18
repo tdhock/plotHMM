@@ -14,4 +14,9 @@ Description: Hidden Markov Models are useful for modeling
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7)
 LinkingTo: Rcpp, RcppArmadillo
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    markdown,
+    R.utils,
+    covr
+VignetteBuilder: knitr

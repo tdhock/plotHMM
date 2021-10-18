@@ -36,5 +36,14 @@ Unit: microseconds
 
 ** Related work
 
-- depmixS4 TODO
+- depmixS4 supports user-defined emission/response
+  distributions. forwardbackward() returns all quantities from Rabiner
+  paper (alpha, beta, gamma, xi, sca/lambda, logLike). Also
+  depmix(ntimes=vector_of_lengths) can be used to specify separate
+  time series. fit(depmix(),emcontrol=em.control(maxit=4)) can be used
+  to limit the number of EM iterations. Set equal variance constraint
+  using the equal argument in the ?fit function. Also viterbi()
+  returns most likely state sequence. Differences: scaling is used
+  (depmixS4) rather than log probabilities (plotHMM), R code used for
+  viterbi (depmixS4) rather than C++ (plotHMM). 
 - TODO
