@@ -27,7 +27,7 @@ void viterbi
   arma::Col<int> state_seq_vec
     (state_seq_ptr, N_data, false, true);
   double best_log_prob, candidate_log_prob;
-  int best_state;
+  int best_state = -2; //not used but avoids compiler warning.
   for(int data_t=0; data_t<N_data; data_t++){
     for(int state_j=0; state_j<N_states; state_j++){
       if(data_t == 0){
