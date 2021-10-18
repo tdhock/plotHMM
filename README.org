@@ -1,7 +1,31 @@
 plotHMM: Plot Hidden Markov Models
 
-Using C++ code is about 100x faster than R code for the forward
-algorithm.
+| [[file:tests/testthat][tests]] | [[https://github.com/tdhock/plotHMM/actions][https://github.com/tdhock/plotHMM/workflows/R-CMD-check/badge.svg]] |
+
+Algorithms for Hidden Markov Models involve recursion over data
+points, which can be slow in R. This package provides C++
+implementations of these algorithms, with a focus on returning
+intermediate results that can be used to create plots/visualizations
+that help understand these algorithms.
+
+** Installation
+
+#+BEGIN_SRC R
+  if(!requireNamespace("remotes"))install.packages("remotes")
+  remotes::install_github("tdhock/plotHMM")
+#+END_SRC
+
+** Usage
+
+Algorithms provided are =plotHMM::FUN_interface= where =FUN= is one
+of: =forward=, =backward=, =multiply=, =pairwise=, =transition=,
+=viterbi=. See help and example pages for more info.
+
+** Timings
+
+R implementations of HMM inference algorithms can be found in
+[[file:tests/testthat/test-CRAN-plotHMM.R]]. Using C++ code is about 100x
+faster than R code for the forward algorithm.
 
 #+BEGIN_SRC 
 Unit: microseconds
@@ -9,3 +33,8 @@ Unit: microseconds
     R 15842.4 16088.2 17265.66 16830.2 18657.6 18909.9     5
   C++   149.0   156.2   163.60   164.9   169.2   178.7     5
 #+END_SRC
+
+** Related work
+
+- depmixS4 TODO
+- TODO
