@@ -21,3 +21,7 @@ transition_interface <- function(log_gamma_mat, log_xi_array) {
     .Call(`_plotHMM_transition_interface`, log_gamma_mat, log_xi_array)
 }
 
+viterbi_interface <- function(log_emission_mat, transition_mat, initial_prob_vec) {
+    .Call(`_plotHMM_viterbi_interface`, log_emission_mat, transition_mat, initial_prob_vec)
+}
+

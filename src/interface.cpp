@@ -4,6 +4,7 @@
 #include "multiply.h"
 #include "pairwise.h"
 #include "transition.h"
+#include "viterbi.h"
 
 // [[Rcpp::export]]
 Rcpp::List forward_interface
@@ -190,3 +191,45 @@ Rcpp::NumericVector transition_interface
   return transition_mat;
 }
 
+// [[Rcpp::export]]
+Rcpp::List viterbi_interface
+(Rcpp::NumericMatrix log_emission_mat,
+ Rcpp::NumericMatrix transition_mat,
+ Rcpp::NumericVector initial_prob_vec
+ ){
+  int N_data = log_emission_mat.nrow();
+  int N_states = log_emission_mat.ncol();
+  if(N_data < 1){
+    Rcpp::stop("log_emission_mat must have at least one row");
+  }
+  if(N_states < 1){
+    Rcpp::stop("log_emission_mat must have at least one col");
+  }
+  if(transition_mat.nrow() != N_states){
+    Rcpp::stop("nrow(transition_mat) must be same as ncol(log_emission_mat)");
+  }
+  if(transition_mat.ncol() != N_states){
+    Rcpp::stop("ncol(transition_mat) must be same as ncol(log_emission_mat)");
+  }
+  if(initial_prob_vec.length() != N_states){
+    Rcpp::stop("length of initial_prob_vec must be same as number of columns of log_emission_mat");
+  }
+  Rcpp::NumericMatrix log_max_prob_mat(N_data, N_states);
+  Rcpp::IntegerMatrix best_state_mat(N_data, N_states);
+  Rcpp::IntegerVector state_seq_vec(N_data);
+  viterbi
+    (N_data,
+     N_states,
+     &log_emission_mat[0],
+     &transition_mat[0],
+     &initial_prob_vec[0],
+     //inputs above, outputs below.
+     &log_max_prob_mat[0],
+     &best_state_mat[0],
+     &state_seq_vec[0]
+     );
+  return Rcpp::List::create
+    (Rcpp::Named("log_max_prob", log_max_prob_mat),
+     Rcpp::Named("best_state", best_state_mat+1),
+     Rcpp::Named("state_seq", state_seq_vec+1));
+}

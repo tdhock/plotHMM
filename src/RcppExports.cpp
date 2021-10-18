@@ -74,6 +74,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// viterbi_interface
+Rcpp::List viterbi_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix transition_mat, Rcpp::NumericVector initial_prob_vec);
+RcppExport SEXP _plotHMM_viterbi_interface(SEXP log_emission_matSEXP, SEXP transition_matSEXP, SEXP initial_prob_vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_emission_mat(log_emission_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type transition_mat(transition_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type initial_prob_vec(initial_prob_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(viterbi_interface(log_emission_mat, transition_mat, initial_prob_vec));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_plotHMM_forward_interface", (DL_FUNC) &_plotHMM_forward_interface, 3},
@@ -81,6 +94,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_plotHMM_multiply_interface", (DL_FUNC) &_plotHMM_multiply_interface, 2},
     {"_plotHMM_pairwise_interface", (DL_FUNC) &_plotHMM_pairwise_interface, 4},
     {"_plotHMM_transition_interface", (DL_FUNC) &_plotHMM_transition_interface, 2},
+    {"_plotHMM_viterbi_interface", (DL_FUNC) &_plotHMM_viterbi_interface, 3},
     {NULL, NULL, 0}
 };
 

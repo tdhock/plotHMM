@@ -120,3 +120,30 @@ test_that("C++ transition agrees with R", {
   expect_equal(cpp.new.A.mat, new.A.mat)
 })
 
+## https://www.cs.ubc.ca/~murphyk/Bayes/rabiner.pdf
+phi_mat <- best_mat <- matrix(0, N.data, n.states)
+## Viterbi.
+phi_mat[1,] <- elnproduct(log(pi.vec), log.emission.mat[1,])
+for(data.t in 2:N.data){
+  for(state.j in 1:n.states){
+    prev.trans <- elnproduct(
+      phi_mat[data.t-1,], log(A.mat[, state.j]))
+    best <- which.max(prev.trans)
+    best_mat[data.t, state.j] <- best
+    phi_mat[data.t, state.j] <- elnproduct(
+      prev.trans[best],
+      log.emission.mat[data.t, state.j])
+  }
+}
+state.vec <- rep(NA, N.data)
+state.vec[N.data] <- which.max(phi_mat[N.data,])
+for(data.t in seq(N.data-1, 1)){
+  state.vec[data.t] <- best_mat[data.t+1, state.vec[data.t+1] ]
+}
+test_that("C++ viterbi agrees with R", {
+  viterbi.list <- plotHMM::viterbi_interface(
+    log.emission.mat, A.mat, pi.vec)
+  expect_equal(viterbi.list$log_max_prob, phi_mat)
+  expect_equal(viterbi.list$best_state, best_mat)
+  expect_equal(viterbi.list$state_seq, state.vec)
+})
