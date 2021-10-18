@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 ## Capture first match in several subjects
 
-```{r}
+```{r, error=TRUE, purl=FALSE}
 x <- 1:3
 model <- depmixS4::depmix(x ~ 1, nstates=2, ntimes=length(x))
 depmixS4::fit(model)

@@ -18,5 +18,6 @@ Suggests: testthat,
     knitr,
     markdown,
     R.utils,
-    covr
+    covr,
+    depmixS4
 VignetteBuilder: knitr
