@@ -7,7 +7,7 @@ void pairwise
 (int N_data,
  int N_states,
  double *log_emission_ptr,
- double *transition_ptr,
+ double *log_transition_ptr,
  double *log_alpha_ptr,
  double *log_beta_ptr,
  //inputs above, outputs below.
@@ -15,8 +15,8 @@ void pairwise
  ){
   arma::mat log_emission_mat    //copy_aux_mem, strict(no size change)
     (log_emission_ptr, N_data, N_states, false, true);
-  arma::mat transition_mat
-    (transition_ptr, N_states, N_states, false, true);
+  arma::mat log_transition_mat
+    (log_transition_ptr, N_states, N_states, false, true);
   arma::mat log_alpha_mat
     (log_alpha_ptr, N_data, N_states, false, true);
   arma::mat log_beta_mat
@@ -32,7 +32,7 @@ void pairwise
            log_beta_mat(data_t+1, state_j));
         double emission_beta_transition = elnproduct
           (emission_beta,
-           log(transition_mat(state_i, state_j)));
+           log_transition_mat(state_i, state_j));
         double value = elnproduct
           (emission_beta_transition,
            log_alpha_mat(data_t, state_i));

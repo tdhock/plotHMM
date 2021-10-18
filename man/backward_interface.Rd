@@ -4,12 +4,12 @@
 \description{Efficient implementation of backward algorithm in C++ code,
   for N data and S states.}
 \usage{backward_interface(
-  log_emission_mat, transition_mat)}
+  log_emission_mat, log_transition_mat)}
 \arguments{
   \item{log_emission_mat}{N x S numeric matrix of log probabilities of
     observing each data point in each state.}
-  \item{transition_mat}{S x S numeric matrix; transition_mat[i,j] is the
-    probability of going from state i to state j.}
+  \item{log_transition_mat}{S x S numeric matrix; log_transition_mat[i,j] is the
+    log probability of going from state i to state j.}
 }
 
 \value{N x S numeric matrix of backward log probabilities.}
@@ -26,7 +26,7 @@ N.data <- length(data.mean.vec)
 y.vec <- rnorm(N.data, data.mean.vec)
 ##model.
 n.states <- 3
-A.mat <- matrix(1/n.states, n.states, n.states)
+log.A.mat <- log(matrix(1/n.states, n.states, n.states))
 state.mean.vec <- c(-1, 0, 1)*0.1
 sd.param <- 1
 log.emission.mat <- dnorm(
@@ -34,6 +34,6 @@ log.emission.mat <- dnorm(
   matrix(state.mean.vec, N.data, n.states, byrow=TRUE),
   sd.param,
   log=TRUE)
-plotHMM::backward_interface(log.emission.mat, A.mat)
+plotHMM::backward_interface(log.emission.mat, log.A.mat)
 
 }

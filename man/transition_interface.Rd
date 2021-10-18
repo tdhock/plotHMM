@@ -29,7 +29,7 @@ N.data <- length(data.mean.vec)
 y.vec <- rnorm(N.data, data.mean.vec)
 ##model.
 n.states <- 3
-A.mat <- matrix(1/n.states, n.states, n.states)
+log.A.mat <- log(matrix(1/n.states, n.states, n.states))
 state.mean.vec <- c(-1, 0, 1)*0.1
 sd.param <- 1
 log.emission.mat <- dnorm(
@@ -37,13 +37,13 @@ log.emission.mat <- dnorm(
   matrix(state.mean.vec, N.data, n.states, byrow=TRUE),
   sd.param,
   log=TRUE)
-pi.vec <- rep(1/n.states, n.states)
-f.list <- plotHMM::forward_interface(log.emission.mat, A.mat, pi.vec)
-b.mat <- plotHMM::backward_interface(log.emission.mat, A.mat)
+log.pi.vec <- log(rep(1/n.states, n.states))
+f.list <- plotHMM::forward_interface(log.emission.mat, log.A.mat, log.pi.vec)
+b.mat <- plotHMM::backward_interface(log.emission.mat, log.A.mat)
 log.gamma.mat <- plotHMM::multiply_interface(f.list$log_alpha, b.mat)
 prob.mat <- exp(log.gamma.mat)
 log.xi.array <- plotHMM::pairwise_interface(
-  log.emission.mat, A.mat, f.list$log_alpha, b.mat)
+  log.emission.mat, log.A.mat, f.list$log_alpha, b.mat)
 plotHMM::transition_interface(log.gamma.mat[-N.data,], log.xi.array)
 
 }

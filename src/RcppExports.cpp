@@ -12,27 +12,27 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // forward_interface
-Rcpp::List forward_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix transition_mat, Rcpp::NumericVector initial_prob_vec);
-RcppExport SEXP _plotHMM_forward_interface(SEXP log_emission_matSEXP, SEXP transition_matSEXP, SEXP initial_prob_vecSEXP) {
+Rcpp::List forward_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix log_transition_mat, Rcpp::NumericVector log_initial_prob_vec);
+RcppExport SEXP _plotHMM_forward_interface(SEXP log_emission_matSEXP, SEXP log_transition_matSEXP, SEXP log_initial_prob_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_emission_mat(log_emission_matSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type transition_mat(transition_matSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type initial_prob_vec(initial_prob_vecSEXP);
-    rcpp_result_gen = Rcpp::wrap(forward_interface(log_emission_mat, transition_mat, initial_prob_vec));
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_transition_mat(log_transition_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type log_initial_prob_vec(log_initial_prob_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(forward_interface(log_emission_mat, log_transition_mat, log_initial_prob_vec));
     return rcpp_result_gen;
 END_RCPP
 }
 // backward_interface
-Rcpp::NumericMatrix backward_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix transition_mat);
-RcppExport SEXP _plotHMM_backward_interface(SEXP log_emission_matSEXP, SEXP transition_matSEXP) {
+Rcpp::NumericMatrix backward_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix log_transition_mat);
+RcppExport SEXP _plotHMM_backward_interface(SEXP log_emission_matSEXP, SEXP log_transition_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_emission_mat(log_emission_matSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type transition_mat(transition_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(backward_interface(log_emission_mat, transition_mat));
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_transition_mat(log_transition_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(backward_interface(log_emission_mat, log_transition_mat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -49,16 +49,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // pairwise_interface
-Rcpp::NumericVector pairwise_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix transition_mat, Rcpp::NumericMatrix log_alpha_mat, Rcpp::NumericMatrix log_beta_mat);
-RcppExport SEXP _plotHMM_pairwise_interface(SEXP log_emission_matSEXP, SEXP transition_matSEXP, SEXP log_alpha_matSEXP, SEXP log_beta_matSEXP) {
+Rcpp::NumericVector pairwise_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix log_transition_mat, Rcpp::NumericMatrix log_alpha_mat, Rcpp::NumericMatrix log_beta_mat);
+RcppExport SEXP _plotHMM_pairwise_interface(SEXP log_emission_matSEXP, SEXP log_transition_matSEXP, SEXP log_alpha_matSEXP, SEXP log_beta_matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_emission_mat(log_emission_matSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type transition_mat(transition_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_transition_mat(log_transition_matSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_alpha_mat(log_alpha_matSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_beta_mat(log_beta_matSEXP);
-    rcpp_result_gen = Rcpp::wrap(pairwise_interface(log_emission_mat, transition_mat, log_alpha_mat, log_beta_mat));
+    rcpp_result_gen = Rcpp::wrap(pairwise_interface(log_emission_mat, log_transition_mat, log_alpha_mat, log_beta_mat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -75,15 +75,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // viterbi_interface
-Rcpp::List viterbi_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix transition_mat, Rcpp::NumericVector initial_prob_vec);
-RcppExport SEXP _plotHMM_viterbi_interface(SEXP log_emission_matSEXP, SEXP transition_matSEXP, SEXP initial_prob_vecSEXP) {
+Rcpp::List viterbi_interface(Rcpp::NumericMatrix log_emission_mat, Rcpp::NumericMatrix log_transition_mat, Rcpp::NumericVector log_initial_prob_vec);
+RcppExport SEXP _plotHMM_viterbi_interface(SEXP log_emission_matSEXP, SEXP log_transition_matSEXP, SEXP log_initial_prob_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_emission_mat(log_emission_matSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type transition_mat(transition_matSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type initial_prob_vec(initial_prob_vecSEXP);
-    rcpp_result_gen = Rcpp::wrap(viterbi_interface(log_emission_mat, transition_mat, initial_prob_vec));
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type log_transition_mat(log_transition_matSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type log_initial_prob_vec(log_initial_prob_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(viterbi_interface(log_emission_mat, log_transition_mat, log_initial_prob_vec));
     return rcpp_result_gen;
 END_RCPP
 }

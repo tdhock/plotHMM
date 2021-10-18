@@ -1,4 +1,4 @@
-#include <math.h>
+#include <math.h>//for INFINITY.
 
 double elnsum(double elnx, double elny){
   if(elnx == -INFINITY){

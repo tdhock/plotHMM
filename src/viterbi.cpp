@@ -7,8 +7,8 @@ void viterbi
 (int N_data,
  int N_states,
  double *log_emission_ptr,
- double *transition_ptr,
- double *initial_prob_ptr,
+ double *log_transition_ptr,
+ double *log_initial_prob_ptr,
  //inputs above, outputs below.
  double *log_max_prob_ptr,
  int *best_state_ptr,
@@ -16,10 +16,10 @@ void viterbi
  ){
   arma::mat log_emission_mat    //copy_aux_mem, strict(no size change)
     (log_emission_ptr, N_data, N_states, false, true);
-  arma::mat transition_mat
-    (transition_ptr, N_states, N_states, false, true);
-  arma::vec initial_prob_vec
-    (initial_prob_ptr, N_states, false, true);
+  arma::mat log_transition_mat
+    (log_transition_ptr, N_states, N_states, false, true);
+  arma::vec log_initial_prob_vec
+    (log_initial_prob_ptr, N_states, false, true);
   arma::mat log_max_prob_mat
     (log_max_prob_ptr, N_data, N_states, false, true);
   arma::Mat<int> best_state_mat
@@ -31,14 +31,14 @@ void viterbi
   for(int data_t=0; data_t<N_data; data_t++){
     for(int state_j=0; state_j<N_states; state_j++){
       if(data_t == 0){
-        best_log_prob = log(initial_prob_vec(state_j));
+        best_log_prob = log_initial_prob_vec(state_j);
         best_state = -1;
       }else{
         best_log_prob = -INFINITY;
         for(int state_i=0; state_i<N_states; state_i++){
           candidate_log_prob = elnproduct
             (log_max_prob_mat(data_t-1, state_i),
-             log(transition_mat(state_i, state_j)));
+             log_transition_mat(state_i, state_j));
           if(best_log_prob < candidate_log_prob){
             best_log_prob = candidate_log_prob;
             best_state = state_i;
