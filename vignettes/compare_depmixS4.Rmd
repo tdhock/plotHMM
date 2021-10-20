@@ -26,4 +26,55 @@ data("buggy.5states", package="plotHMM")
 model.spec <- depmixS4::depmix(logratio ~ 1, data=buggy.5states, nstates=5)
 set.seed(1)
 model.fit <- depmixS4::fit(model.spec)
+
+## 4 states ok.
+model.spec <- depmixS4::depmix(logratio ~ 1, data=buggy.5states, nstates=4)
+set.seed(1)
+model.fit <- depmixS4::fit(model.spec)
+
+str(buggy.5states)
+plot(buggy.5states$logratio)
+
+data(neuroblastoma, package="neuroblastoma")
+library(data.table)
+nb.dt <- data.table(neuroblastoma$profiles)
+one.chrom <- nb.dt[profile.id=="4" & chromosome=="2"]
+model.spec <- depmixS4::depmix(logratio ~ 1, data=one.chrom, nstates=3)
+set.seed(1)
+unconstrained.fit <- depmixS4::fit(model.spec)
+slotNames(unconstrained.fit)
+par.vec <- getpars(unconstrained.fit)
+
+dt.arg.list <- list()
+param.type.vec <- c(mean="(Intercept)", sd="sd")
+for(param.type in names(param.type.vec)){
+  param.name <- param.type.vec[[param.type]]
+  dt.arg.list[[param.type]] <- par.vec[names(par.vec) == param.name]
+}
+do.call(data.table, dt.arg.list)
+
+unconstrained.fit@posterior
+
+## joint analysis.
+one.pro <- nb.dt[profile.id=="4" & chromosome%in%1:10]
+ntimes <- rle(as.integer(one.pro$chromosome))
+model.spec <- depmixS4::depmix(
+  logratio ~ 1, data=one.pro, nstates=4, ntimes=ntimes$lengths)
+set.seed(1)
+unconstrained.fit <- depmixS4::fit(model.spec)
+one.pro[, viterbi := factor(unconstrained.fit@posterior[,1]) ]
+library(ggplot2)
+ggplot()+
+  geom_point(aes(
+    position/1e6, logratio, color=viterbi),
+    data=one.pro)+
+  facet_grid(. ~ chromosome, scales="free", space="free")
+
+## Constrained fit? doesn't seem to work.
+par.vec <- getpars(model.spec)
+equal.groups <- rep(1, length(par.vec))
+equal.groups[names(par.vec)=="sd"] <- 2
+constrained.fit <- depmixS4::fit(model.spec, equal=equal.groups)
+
+
 ```
