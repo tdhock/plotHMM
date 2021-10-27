@@ -7,13 +7,13 @@
   log_emission_mat, log_transition_mat, log_alpha_mat, log_beta_mat)}
 \arguments{
   \item{log_emission_mat, log_alpha_mat, log_beta_mat}{
-    N x S numeric matrices of log probabilities.}
+    N x S numeric matrices of log likelihood.}
   \item{log_transition_mat}{S x S numeric matrix; log_transition_mat[i,j] is the
     log probability of going from state i to state j.}
 }
 
 \value{
-  S x S x N-1 numeric array of log probabilities.
+  S x S x N-1 numeric array of log likelihood.
 }
 
 \author{Toby Dylan Hocking}

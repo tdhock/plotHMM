@@ -6,7 +6,7 @@
 \usage{forward_interface(
   log_emission_mat, log_transition_mat, log_initial_prob_vec)}
 \arguments{
-  \item{log_emission_mat}{N x S numeric matrix of log probabilities of
+  \item{log_emission_mat}{N x S numeric matrix of log likelihood of
     observing each data point in each state.}
   \item{log_transition_mat}{S x S numeric matrix; log_transition_mat[i,j] is the
     log probability of going from state i to state j.}
@@ -15,8 +15,8 @@
 }
 
 \value{list with two elements
-\item{log_alpha}{N x S numeric matrix of forward log probabilities.}
-\item{log_lik}{numeric scalar log likelihood of data given model parameters.}
+\item{log_alpha}{N x S numeric matrix of forward log likelihood at each data/state.}
+\item{log_lik}{numeric scalar total log likelihood of data given model parameters.}
 }
 
 \author{Toby Dylan Hocking}

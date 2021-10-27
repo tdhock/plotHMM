@@ -10,7 +10,7 @@
     probabilities, from forward and backward algorithms.}
 }
 
-\value{N x S numeric matrix of overall log probabilities.}
+\value{N x S numeric matrix of overall log likelihood.}
 
 \author{Toby Dylan Hocking}
 

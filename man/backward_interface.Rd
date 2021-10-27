@@ -6,13 +6,13 @@
 \usage{backward_interface(
   log_emission_mat, log_transition_mat)}
 \arguments{
-  \item{log_emission_mat}{N x S numeric matrix of log probabilities of
+  \item{log_emission_mat}{N x S numeric matrix of log likelihood of
     observing each data point in each state.}
   \item{log_transition_mat}{S x S numeric matrix; log_transition_mat[i,j] is the
     log probability of going from state i to state j.}
 }
 
-\value{N x S numeric matrix of backward log probabilities.}
+\value{N x S numeric matrix of backward log likelihood.}
 
 \author{Toby Dylan Hocking}
 

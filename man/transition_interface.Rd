@@ -14,7 +14,7 @@
 }
 
 \value{
-  S x S numeric array of probabilities (new transition matrix).
+  S x S numeric array of log probabilities (new transition matrix).
 }
 
 \author{Toby Dylan Hocking}
