@@ -1,7 +1,7 @@
 Package: plotHMM
 Type: Package
 Title: Plot Hidden Markov Models
-Version: 2021.10.15
+Version: 2021.10.26
 Authors@R: c(
     person("Toby", "Hocking",
      email="toby.hocking@r-project.org",
@@ -19,5 +19,9 @@ Suggests: testthat,
     markdown,
     R.utils,
     covr,
-    depmixS4
+    depmixS4,
+    data.table,
+    ggplot2,
+    neuroblastoma,
+    microbenchmark
 VignetteBuilder: knitr

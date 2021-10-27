@@ -36,14 +36,18 @@ Unit: microseconds
 
 ** Related work
 
+- plotHMM was used to create the [[https://github.com/tdhock/cs499-599-fall-2021/raw/main/slides/09-hidden-markov-models.pdf][slides]] for CS499/599 (Unsupervised
+  Learning) at Northern Arizona University, Fall 2021.
 - depmixS4 supports user-defined emission/response
   distributions. forwardbackward() returns all quantities from Rabiner
   paper (alpha, beta, gamma, xi, sca/lambda, logLike). Also
   depmix(ntimes=vector_of_lengths) can be used to specify separate
   time series. fit(depmix(),emcontrol=em.control(maxit=4)) can be used
-  to limit the number of EM iterations. Set equal variance constraint
-  using the equal argument in the ?fit function. Also viterbi()
-  returns most likely state sequence. Differences: scaling is used
-  (depmixS4) rather than log probabilities (plotHMM), R code used for
-  viterbi (depmixS4) rather than C++ (plotHMM). 
+  to limit the number of EM iterations. Equal variance constraints can
+  apparently be set using the equal argument in the ?fit function, but
+  it does not seem to work for the data shown in
+  [[file:vignettes/compare_depmixS4.Rmd]]. Also viterbi() returns most
+  likely state sequence. Differences: scaling is used (depmixS4)
+  rather than log probabilities (plotHMM), R code used for viterbi
+  (depmixS4) rather than C++ (plotHMM).
 - TODO

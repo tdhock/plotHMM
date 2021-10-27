@@ -12,56 +12,46 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Capture first match in several subjects
+## Simple data set where depmix errors for nstates=2
 
 ```{r, error=TRUE, purl=FALSE}
-x <- 1:3
+x <- 1:4
 model <- depmixS4::depmix(x ~ 1, nstates=2, ntimes=length(x))
 depmixS4::fit(model)
+```
 
-## Data set where nstates=5 does not work, Error in fb(init = init, A
-## = trDens, B = dens, ntimes = ntimes(object), : NA/NaN/Inf in
-## foreign function call (arg 10)
+## Data set where nstates=5 errors
+
+```{r, error=TRUE, purl=FALSE}
 data("buggy.5states", package="plotHMM")
-model.spec <- depmixS4::depmix(logratio ~ 1, data=buggy.5states, nstates=5)
-set.seed(1)
-model.fit <- depmixS4::fit(model.spec)
-
-## 4 states ok.
-model.spec <- depmixS4::depmix(logratio ~ 1, data=buggy.5states, nstates=4)
-set.seed(1)
-model.fit <- depmixS4::fit(model.spec)
-
-str(buggy.5states)
 plot(buggy.5states$logratio)
+model.spec <- depmixS4::depmix(
+  logratio ~ 1, data=buggy.5states, nstates=5)
+set.seed(1)
+model.fit <- depmixS4::fit(model.spec)
+```
 
+## Fit several data sequences
+
+```{r}
 data(neuroblastoma, package="neuroblastoma")
 library(data.table)
 nb.dt <- data.table(neuroblastoma$profiles)
-one.chrom <- nb.dt[profile.id=="4" & chromosome=="2"]
-model.spec <- depmixS4::depmix(logratio ~ 1, data=one.chrom, nstates=3)
-set.seed(1)
-unconstrained.fit <- depmixS4::fit(model.spec)
-slotNames(unconstrained.fit)
-par.vec <- getpars(unconstrained.fit)
-
-dt.arg.list <- list()
-param.type.vec <- c(mean="(Intercept)", sd="sd")
-for(param.type in names(param.type.vec)){
-  param.name <- param.type.vec[[param.type]]
-  dt.arg.list[[param.type]] <- par.vec[names(par.vec) == param.name]
-}
-do.call(data.table, dt.arg.list)
-
-unconstrained.fit@posterior
-
-## joint analysis.
 one.pro <- nb.dt[profile.id=="4" & chromosome%in%1:10]
 ntimes <- rle(as.integer(one.pro$chromosome))
+n.states <- 4
 model.spec <- depmixS4::depmix(
-  logratio ~ 1, data=one.pro, nstates=4, ntimes=ntimes$lengths)
+  logratio ~ 1, data=one.pro,
+  nstates=n.states, ntimes=ntimes$lengths)
 set.seed(1)
 unconstrained.fit <- depmixS4::fit(model.spec)
+param.names <- c(mean="(Intercept)", sd="sd")
+par.vec <- depmixS4::getpars(unconstrained.fit)
+matrix(
+  par.vec[names(par.vec) %in% param.names],
+  ncol=length(param.names),
+  byrow=TRUE,
+  dimnames=list(state=1:n.states, parameter=names(param.names)))
 one.pro[, viterbi := factor(unconstrained.fit@posterior[,1]) ]
 library(ggplot2)
 ggplot()+
@@ -69,12 +59,60 @@ ggplot()+
     position/1e6, logratio, color=viterbi),
     data=one.pro)+
   facet_grid(. ~ chromosome, scales="free", space="free")
+```
 
-## Constrained fit? doesn't seem to work.
-par.vec <- getpars(model.spec)
+## How to constrain common variance parameter?
+
+```{r}
+par.vec <- depmixS4::getpars(model.spec)
 equal.groups <- rep(1, length(par.vec))
 equal.groups[names(par.vec)=="sd"] <- 2
-constrained.fit <- depmixS4::fit(model.spec, equal=equal.groups)
-
-
+if(FALSE){
+  constrained.fit <- depmixS4::fit(model.spec, equal=equal.groups)
+}
 ```
+
+# Forward-backward algorithm speed comparison 
+
+```{r}
+one.chrom <- nb.dt[profile.id=="4" & chromosome=="2"]
+n.states <- 3
+model.spec <- depmixS4::depmix(
+  logratio ~ 1,
+  data=one.chrom,
+  nstates=n.states)
+log.emission.mat <- log(model.spec@dens[,1,])
+log.transition.mat <- log(model.spec@trDens[1,,])
+log.init.vec <- log(model.spec@init[1,])
+microbenchmark::microbenchmark(depmixS4={
+  result <- depmixS4::forwardbackward(model.spec)
+}, plotHMM={
+  fwd.list <- plotHMM::forward_interface(
+    log.emission.mat, log.transition.mat, log.init.vec)
+  back.mat <- plotHMM::backward_interface(
+    log.emission.mat, log.transition.mat)
+  mult.mat <- plotHMM::multiply_interface(
+    fwd.list$log_alpha, back.mat)
+  pairwise.array <- plotHMM::pairwise_interface(
+    log.emission.mat, log.transition.mat,
+    fwd.list$log_alpha, back.mat)
+}, times=5)  
+```
+
+plotHMM is 2-3x slower than depmixS4. Possibly due to (1) overhead of
+several function calls rather than just one, and (2) log space
+computations are slower than scaling.
+
+# Viterbi algorithm speed comparison
+
+```{r}
+microbenchmark::microbenchmark(depmixS4={
+  depmixS4::viterbi(model.spec)
+}, plotHMM={
+  plotHMM::viterbi_interface(
+    log.emission.mat, log.transition.mat, log.init.vec)
+}, times=5)
+```
+
+plotHMM is about 100x faster than depmixS4, because of the overhead of
+loops in R (memory allocation in each iteration).
