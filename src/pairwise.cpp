@@ -1,7 +1,9 @@
+#define ARMA_DONT_PRINT_ERRORS
 #include <armadillo>
 #include <math.h>
 #include "pairwise.h"
 #include "eln.h"
+//arma::set_cerr_stream( Rcpp::Rcerr );
 
 void pairwise
 (int N_data,

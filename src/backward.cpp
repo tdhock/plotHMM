@@ -1,3 +1,4 @@
+#define ARMA_DONT_PRINT_ERRORS
 #include <armadillo>
 #include <math.h>//for INFINITY, 
 #include "backward.h"
