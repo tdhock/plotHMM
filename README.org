@@ -11,6 +11,8 @@ that help understand these algorithms.
 ** Installation
 
 #+BEGIN_SRC R
+  install.packages("plotHMM")
+  ## OR:
   if(!requireNamespace("remotes"))install.packages("remotes")
   remotes::install_github("tdhock/plotHMM")
 #+END_SRC
