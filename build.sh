@@ -26,3 +26,6 @@ $RCMD INSTALL $PKG_TGZ
 
 echo Checking $PKG_TGZ
 $RCMD check --as-cran $PKG_TGZ
+
+echo Checking without Suggests
+_R_CHECK_DEPENDS_ONLY_=true $RCMD check --as-cran $PKG_TGZ
