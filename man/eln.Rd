@@ -31,5 +31,3 @@ elnsum(lx, ly)
 logsumexp(ly)
 
 }
-
-\references{\url{http://bozeman.genome.washington.edu/compbio/mbt599_2006/hmm_scaling_revised.pdf}}

@@ -1,5 +1,5 @@
 #define ARMA_WARN_LEVEL 1
-#include <RcppArmadillo.h>// or <armadillo>
+#include <armadillo>
 #include <math.h>//for INFINITY
 #include "multiply.h"
 #include "eln.h"

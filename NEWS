@@ -1,3 +1,8 @@
+Changes in version 2025.7.23
+
+- Change <RcppArmadillo.h> to <armadillo> in src/*.cpp files, to emphasize portability.
+- Remove broken bozeman URL from eln.Rd.
+
 Changes in version 2023.8.28
 
 - Convert NEWS.

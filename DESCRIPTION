@@ -1,7 +1,7 @@
 Package: plotHMM
 Type: Package
 Title: Plot Hidden Markov Models
-Version: 2023.8.28
+Version: 2025.7.23
 Authors@R: c(
     person("Toby", "Hocking",
      email="toby.hocking@r-project.org",
